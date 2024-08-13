@@ -5,12 +5,40 @@ on: push
 jobs:
   cypress-run:
     runs-on: ubuntu-22.04
+    # steps:
+    #   - name: Checkout
+    #     uses: actions/checkout@v4
+    #   # Install npm dependencies, cache them correctly
+    #   # and run all Cypress tests
+    #   - name: Cypress run
+    #     uses: cypress-io/github-action@v6
+    #     with:
+    #       browser: chrome
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      # Install npm dependencies, cache them correctly
-      # and run all Cypress tests
-      - name: Cypress run
-        uses: cypress-io/github-action@v6
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
         with:
-          browser: chrome
+          node-version: '18' # Use the version your project requires
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Run Cypress tests with Mochawesome
+        run: |
+          npx cypress run --reporter mochawesome \
+            --reporter-options reportDir="cypress/results",overwrite=false,html=false,json=true
+
+      - name: Merge Mochawesome JSON reports
+        run: npx mochawesome-merge "cypress/results/*.json" > mochawesome.json
+
+      - name: Generate HTML report from Mochawesome JSON
+        run: npx marge mochawesome.json
+
+      - name: Upload Mochawesome Report Artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: mochawesome-report
+          path: mochawesome-report/ # Adjust the path if needed
