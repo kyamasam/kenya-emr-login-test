@@ -1,6 +1,6 @@
 describe("test that login fails with incorrect credentials", () => {
   beforeEach(() => {
-    cy.visit("https://qa.kenyahmis.org/openmrs/spa/login");
+    cy.visit("/openmrs/spa/login");
   });
   it("test login with incorrect username", () => {
     cy.get("#username").type("1231312");
@@ -26,7 +26,7 @@ describe("test that login fails with incorrect credentials", () => {
 
 describe("test that users can login to the open mrs portal successfully", () => {
   beforeEach(() => {
-    cy.visit("https://qa.kenyahmis.org/openmrs/spa/login");
+    cy.visit("/openmrs/spa/login");
   });
   it("test login with correct credentials", () => {
     cy.get("#username").type("admin");
