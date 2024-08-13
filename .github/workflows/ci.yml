@@ -24,7 +24,7 @@ jobs:
           node-version: '18' # Use the version your project requires
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
 
       - name: Run Cypress tests with Mochawesome
         run: |
